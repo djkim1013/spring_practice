@@ -10,5 +10,12 @@
         <input type="password" id="input-pw">
         <input type="submit" value="login">
     </form>
+    <script type="application/javascript">
+        document.querySelector("form").addEventListener("submit",login);
+        function login(event){
+            event.preventDefault();
+            alert("submit");
+        }
+    </script>
 </body>
 </html>
