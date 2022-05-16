@@ -1,8 +1,5 @@
 package com.example.drill.etc;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 class ClassDrillExtended extends  ClassDrillSuper{
     ClassDrillExtended(){
         super();
