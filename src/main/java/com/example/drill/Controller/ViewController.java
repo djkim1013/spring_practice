@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class IndexController {
+public class ViewController {
 
     @GetMapping("favicon.ico")
     @ResponseBody
@@ -16,6 +16,4 @@ public class IndexController {
     public String view(Model model){
         return "login";
     }
-//git1234567891234567
-    //this is main
 }
