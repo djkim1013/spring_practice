@@ -1,36 +1,143 @@
+// 프로젝트의 모든 모듈에 공통
 plugins {
-    id 'org.springframework.boot' version '2.6.1'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+    id "idea"
+    id "java"
+    id "java-library"
+    id "org.springframework.boot" version "2.4.4" apply false
+    id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+// 모든 프로젝트 적용사항
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'java-library'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    repositories {
+        mavenCentral()
+//        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    group 'com.example'
+    version '1.0-SNAPSHOT'
+
+    // 자바버전 지정
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    // 컴파일 인코딩 옵션
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
+    // 컴파일 옵션지정
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:-unchecked" << "-Xlint:-deprecation"
+        options.fork = true
+        options.forkOptions.executable = 'javac'
+    }
+
+    jar {
+        enabled = false
     }
 }
 
-repositories {
-    mavenCentral()
+// 하위 프로젝트
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springBootCloudVersion}"
+        }
+    }
+
+    // 의존성
+    dependencies {
+        // configuration processor
+        implementation("org.springframework.boot:spring-boot-configuration-processor")
+
+        // jackson, https://github.com/FasterXML/jackson-modules-base/tree/master/afterburner
+        implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+        implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
+        implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${jacksonVersion}")
+        implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
+        implementation("com.fasterxml.jackson.module:jackson-module-afterburner:${jacksonVersion}")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonVersion}")
+
+        // lombok
+        compileOnly("org.projectlombok:lombok:${lombokVersion}")
+        // mapstruct
+        compileOnly("org.mapstruct:mapstruct:${mapstructVersion}")
+        compileOnly("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+        compileOnly("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+
+        // 이클립스에서 lombok과 mapstruct 사용, https://sonbbang78.tistory.com/2
+        annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+        annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+        testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+        // validation
+        implementation("org.springframework.boot:spring-boot-starter-validation")
+
+        // actuator
+        implementation("org.springframework.boot:spring-boot-starter-actuator")
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.cloud:spring-cloud-starter-config")
+
+        // test
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        // 추가, 없으면 JUnit5 테스트 시 오류 발생
+        testImplementation('org.junit.platform:junit-platform-launcher')
+        testImplementation('org.junit.jupiter:junit-jupiter-api')
+        testImplementation('org.junit.jupiter:junit-jupiter-params')
+        testImplementation('org.junit.jupiter:junit-jupiter-engine')
+    }
+
+    // 태스크 - scaffolding
+    task initSourceFolders {
+        sourceSets*.java.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
+
+        sourceSets*.resources.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
+    }
+
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-//    runtimeOnly 'mysql:mysql-connector-java'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+project(":was") {
+
+    dependencies {
+
+        //h2 db
+        runtimeOnly("com.h2database:h2")
+        // Jpa
+        api("org.springframework.boot:spring-boot-starter-data-jpa")
+
+        implementation('org.springframework.boot:spring-boot-starter-actuator')
+
+    }
+
+    // JUnit5 테스트를 위해 추가
+    test {
+        exclude '**/*'
+        useJUnitPlatform()
+    }
 }
 
-test {
-    useJUnitPlatform()
+project(":config-server") {
+
+    dependencies {
+        // spring-cloud-config
+        implementation('org.springframework.cloud:spring-cloud-config-server')
+
+        implementation('org.springframework.boot:spring-boot-starter-actuator')
+    }
 }

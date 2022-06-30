@@ -1,0 +1,12 @@
+# server
+server:
+  port: ${PORT:9010}
+
+# spring, https://luvstudy.tistory.com/130
+spring:
+  config:
+    import: "optional:configserver:http://localhost:8888/djkim"
+  application:
+    name: Drill
+  profiles:
+    active: dev
