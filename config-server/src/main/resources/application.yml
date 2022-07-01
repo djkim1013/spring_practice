@@ -5,9 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: file:///C:/Users/gram/IdeaProjects/drill
-          search-paths: /config
-          default-label: main
+          uri: file:///C:/Users/gram/IdeaProjects/drill/config
 management:
   endpoints:
     web:
