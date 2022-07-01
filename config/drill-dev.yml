@@ -38,4 +38,4 @@ logging:
 
 #properties
 drill:
-  value: 11
+  test-schedule-period: 1 * * * * *
