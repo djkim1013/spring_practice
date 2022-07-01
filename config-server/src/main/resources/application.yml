@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: file:///C:/Users/gram/IdeaProjects/drill
+          uri: file:///C:/Users/gram/IdeaProjects/spring_practice
           search-paths: /config
           default-label: main
 management:
