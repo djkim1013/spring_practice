@@ -25,6 +25,9 @@ spring:
       enabled: true
     restart:
       enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create
 
 # logging
 logging:

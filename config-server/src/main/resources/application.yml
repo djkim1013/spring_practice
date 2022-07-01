@@ -5,12 +5,9 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/djkim1013/spring-practice.git
+          uri: file:///C:/Users/gram/IdeaProjects/drill
+          search-paths: /config
           default-label: djkim
-          search-paths: config
-          skip-ssl-validation: true
-          username: djkim1013
-          password: 3starnzer0
 management:
   endpoints:
     web:
