@@ -6,7 +6,7 @@ server:
 # spring
 spring:
   application:
-    name: Drill
+    name: drill
   mvc:
     static-path-pattern: /**
     view:
