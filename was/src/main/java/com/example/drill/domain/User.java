@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "T_USER")
+@Table(name = "USER")
 @ToString
 public class User {
 

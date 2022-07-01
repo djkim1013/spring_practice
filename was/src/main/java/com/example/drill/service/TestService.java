@@ -20,8 +20,6 @@ public class TestService {
         User user = testRepository.findByUserId(userId);
         System.out.println(user);
         user.setUserName(userUpdate.getUserName());
-//        System.out.println(testRepository.findAllByUserName("updated User"));
-//        testRepository.save(user);
         System.out.println(testRepository.findAllByUserName("updated User"));
     }
 

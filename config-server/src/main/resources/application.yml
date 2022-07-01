@@ -5,14 +5,11 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/djkim1013/spring_practice.git
-          skip-ssl-validation: true
+          uri: file:///C:/Users/gram/IdeaProjects/drill
+          search-paths: /config
           default-label: djkim
 management:
   endpoints:
     web:
       exposure:
         include: refresh
-  endpoint:
-    shutdown:
-      enabled: true

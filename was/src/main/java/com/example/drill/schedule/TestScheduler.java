@@ -10,12 +10,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-@RequiredArgsConstructor
 public class TestScheduler {
 
-    final private Config config;
-
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "${drill.test-schedule-period}")
     public void scheduleHang(){
         System.out.println("hang : " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     }

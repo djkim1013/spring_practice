@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,17 +22,17 @@ public class TestController {
     public void returnFavicon(){}
 
     @GetMapping
-    public String view(Model model){
-        return "login";
+    public ModelAndView view(){
+        return new ModelAndView("login");
     }
 
     @GetMapping("test/{userId}")
     @ResponseBody
-    public void test(@PathVariable Integer userId, User user){
+    public void test(@PathVariable(required = false) Integer userId, User user){
         testService.test(userId, user);
     }
 
-    @GetMapping("test/add")
+    @PostMapping("test/add")
     @ResponseBody
     public void testAdd(){
         testService.testAdd();

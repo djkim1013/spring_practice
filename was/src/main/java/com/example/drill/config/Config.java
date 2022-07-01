@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class Config {
-    @Value("${drill.value}")
+//    @Value("${drill.value}")
     String value;
 }
