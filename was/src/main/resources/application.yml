@@ -56,3 +56,4 @@ logging:
 #properties
 drill:
   test-schedule-period: 0/10 * * * * *
+  bla: 1
