@@ -1,12 +1,7 @@
 # spring, https://luvstudy.tistory.com/130
 spring:
-  config:
-    use-legacy-processing: true
-#    import: "optional:configserver:http://localhost:8888"
   application:
     name: drill
-  profiles:
-    active: dev
 
 management:
   endpoints:
@@ -26,6 +21,7 @@ spring:
   config:
     activate:
       on-profile: dev
+    use-legacy-processing: true
   application:
     name: drill
   mvc:
