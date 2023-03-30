@@ -1,8 +1,6 @@
-# spring, https://luvstudy.tistory.com/130
 spring:
   application:
     name: drill
-
 management:
   endpoints:
     web:
@@ -37,11 +35,6 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: false
   jpa:
     hibernate:
       ddl-auto: create
