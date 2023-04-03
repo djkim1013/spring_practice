@@ -26,6 +26,8 @@ spring:
     view:
       prefix: html/
       suffix: .html
+  webflux:
+    base-path:
   datasource:
     url: jdbc:h2:tcp://localhost/~/test
     username: sa
@@ -41,8 +43,18 @@ logging:
     root: info
     com:
       example: debug
+      zaxxer:
+        hikari:
+          pool:
+            HikariPool: debug
+    jdbc:
+      sqlonly: off
+      sqltiming: debug
+      audit: off
+      resultset: off
+      resultsettable: debug
+      connection: info
 
 #properties
 drill:
-  test-schedule-period: 0/10 * * * * *
-  bla: 111
+  test-schedule-period: "-"
