@@ -23,6 +23,11 @@ public class TestController {
 
     @GetMapping
     public ModelAndView view(){
+        return new ModelAndView("index");
+    }
+
+    @GetMapping("login")
+    public ModelAndView js(){
         return new ModelAndView("login");
     }
 

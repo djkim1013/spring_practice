@@ -23,13 +23,9 @@ spring:
   application:
     name: drill
   mvc:
-    static-path-pattern: /**
     view:
-      suffix: .html
       prefix: html/
-  web:
-    resources:
-      static-locations: classpath:/static/
+      suffix: .html
   datasource:
     url: jdbc:h2:tcp://localhost/~/test
     username: sa
