@@ -40,20 +40,7 @@ spring:
 # logging
 logging:
   level:
-    root: info
-    com:
-      example: debug
-      zaxxer:
-        hikari:
-          pool:
-            HikariPool: debug
-    jdbc:
-      sqlonly: off
-      sqltiming: debug
-      audit: off
-      resultset: off
-      resultsettable: debug
-      connection: info
+    root: debug
 
 #properties
 drill:

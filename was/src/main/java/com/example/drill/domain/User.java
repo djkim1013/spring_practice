@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USER")
 @ToString
@@ -21,4 +19,8 @@ public class User {
 
     @Column(name = "USER_NAME")
     String userName;
+
+    public User(String userName){
+        this.userName = userName;
+    }
 }

@@ -1,15 +1,9 @@
 package com.example.drill.controller;
 
-import com.example.drill.domain.User;
 import com.example.drill.service.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,27 +13,18 @@ public class TestController {
 
     @GetMapping("favicon.ico")
     @ResponseBody
-    public void returnFavicon(){}
-
-    @GetMapping
-    public ModelAndView view(){
-        return new ModelAndView("index");
+    public void returnFavicon() {
     }
 
-    @GetMapping("login")
-    public ModelAndView js(){
-        return new ModelAndView("login");
-    }
-
-    @GetMapping("test/{userId}")
+    @PostMapping("/test/{n}")
     @ResponseBody
-    public void test(@PathVariable(required = false) Integer userId, User user){
-        testService.test(userId, user);
+    public void postNUsers(@PathVariable Integer n) {
+        testService.postNUsers(n);
     }
 
-    @PostMapping("test/add")
+    @PutMapping("/test/{n}")
     @ResponseBody
-    public void testAdd(){
-        testService.testAdd();
+    public void putUsers(@PathVariable Integer n) {
+        testService.putUsers(n);
     }
 }
