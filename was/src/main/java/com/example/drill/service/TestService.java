@@ -1,15 +1,16 @@
 package com.example.drill.service;
 
-import com.example.drill.domain.User;
+import com.example.drill.domain.dto.UserDto;
+import com.example.drill.domain.entity.User;
 import com.example.drill.repository.TestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,27 +24,25 @@ public class TestService {
         this.service = service;
     }
 
-    public void postNUsers(int n) {
-        for (int i = 0; i < n; i++) {
-            service.postUser(i);
+    @Transactional
+    public void postUser(UserDto requestBody) {
+        testRepository.save(new User(requestBody.getUserName()));
+    }
+
+    @Transactional
+    public void putUser_(UserDto requestBody) throws Throwable {
+        User user = testRepository.findById(requestBody.getUserId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
+        user.setUserName(requestBody.getUserName());
+        double randomNum = Math.random();
+        if (randomNum > 1.0)
+            throw new JpaSystemException(new RuntimeException("random intended exception - " + String.format("%1.2f", randomNum)));
+    }
+
+    public void putUser(UserDto requestBody) {
+        try {
+            service.putUser_(requestBody);
+        } catch (Throwable throwable) {
+            System.out.println(throwable.getMessage());
         }
-    }
-
-    @Transactional
-    protected void postUser(int i) {
-        testRepository.save(new User(String.format("User%03d", i + 1)));
-    }
-
-    @Transactional
-    public void putUsers(Integer n) {
-        for (int i = 0; i < n; i++) {
-            service.putUser(i);
-        }
-    }
-
-    @Transactional
-    protected void putUser(int i) {
-        User user = testRepository.findById(i + 1).orElseThrow(() -> new RuntimeException("not found"));
-        user.setUserName(user.getUserName() + "mod" + LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE));
     }
 }
