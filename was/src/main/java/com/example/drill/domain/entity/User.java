@@ -1,6 +1,7 @@
 package com.example.drill.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -20,9 +21,13 @@ public class User {
     @Column(name = "USER_NAME", length = 200, nullable = false)
     String userName;
 
+    @Column(name = "CREATION_TIMESTAMP")
+    @CreationTimestamp
+    LocalDateTime creationTimestamp;
+
     @Column(name = "UPDATE_TIMESTAMP")
     @UpdateTimestamp
-    LocalDateTime updateDateTime;
+    LocalDateTime updateTimestamp;
 
     public User(String userName){
         this.userName = userName;

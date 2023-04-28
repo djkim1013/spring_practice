@@ -1,27 +1,27 @@
 package com.example.drill.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.drill.domain.entity.User;
 import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-@ToString
+@NoArgsConstructor
 public class UserDto {
 
-    public interface PostUserValidation {}
-    public interface PutUserValidation {}
-
-    @JsonIgnore
     Integer userId;
 
-    @NotBlank
     String userName;
 
-    @JsonIgnore
-    LocalDateTime updateDateTime;
+    LocalDateTime creationTimestamp;
+
+    LocalDateTime updateTimestamp;
+
+    public UserDto(User user){
+        this.userId = user.getUserId();
+        this.userName = user.getUserName();
+        this.creationTimestamp = user.getCreationTimestamp();
+        this.updateTimestamp = user.getUpdateTimestamp();
+    }
 }
