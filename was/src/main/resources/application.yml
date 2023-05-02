@@ -1,8 +1,6 @@
-# spring, https://luvstudy.tistory.com/130
 spring:
   application:
     name: drill
-
 management:
   endpoints:
     web:
@@ -25,35 +23,33 @@ spring:
   application:
     name: drill
   mvc:
-    static-path-pattern: /**
     view:
-      suffix: .html
       prefix: html/
-  web:
-    resources:
-      static-locations: classpath:/static/
+      suffix: .html
+  webflux:
+    base-path:
   datasource:
     url: jdbc:h2:tcp://localhost/~/test
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: false
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
 
 # logging
 logging:
   level:
     root: info
     com:
-      example: debug
-
-#properties
-drill:
-  test-schedule-period: 0/10 * * * * *
-  bla: 111
+      example:
+        drill: debug
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: debug
