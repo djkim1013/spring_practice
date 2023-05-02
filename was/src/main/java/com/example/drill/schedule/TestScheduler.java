@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @RefreshScope
 public class TestScheduler {
 
-    @Scheduled(cron = "${drill.test-schedule-period}")
+    @Scheduled(cron = "${drill.test-schedule-period:-}")
     public void scheduleHang(){
         log.info("hang : " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     }

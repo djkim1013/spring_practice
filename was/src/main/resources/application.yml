@@ -36,12 +36,21 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
 
 # logging
 logging:
   level:
-    root: debug
-
-#properties
-drill:
-  test-schedule-period: "-"
+    root: info
+    com:
+      example:
+        drill: debug
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: debug
