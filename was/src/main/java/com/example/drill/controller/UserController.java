@@ -5,14 +5,13 @@ import com.example.drill.domain.dto.GetUserResponseDto;
 import com.example.drill.domain.dto.PostPutUserRequestDto;
 import com.example.drill.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.client.HttpResponseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-public class TestController {
+public class UserController {
 
     final UserService userService;
 
@@ -24,7 +23,7 @@ public class TestController {
     @GetMapping({"/user", "/user/{userId}"})
     @ResponseBody
     public GetUserResponseDto getUser(@PathVariable(required = false) Integer userId,
-                                      @Validated GetUserRequestDto requestParams) throws HttpResponseException {
+                                      @Validated GetUserRequestDto requestParams) {
         requestParams.setUserId(userId);
         return userService.getUser(requestParams);
     }
@@ -37,7 +36,7 @@ public class TestController {
 
     @PutMapping("/user/{userId}")
     @ResponseBody
-    public void putUser(@PathVariable int userId, @RequestBody @Validated(PostPutUserRequestDto.PutUserValidation.class) PostPutUserRequestDto requestBody) throws HttpResponseException {
+    public void putUser(@PathVariable int userId, @RequestBody @Validated(PostPutUserRequestDto.PutUserValidation.class) PostPutUserRequestDto requestBody) {
         requestBody.setUserId(userId);
         userService.putUser(requestBody);
     }
