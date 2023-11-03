@@ -3,12 +3,6 @@ spring:
   application:
     name: drill
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh
-
 ---
 
 # server
@@ -21,30 +15,30 @@ spring:
   config:
     activate:
       on-profile: dev
-    use-legacy-processing: true
   application:
     name: drill
-  mvc:
-    static-path-pattern: /**
-    view:
-      suffix: .html
-      prefix: html/
-  web:
-    resources:
-      static-locations: classpath:/static/
   datasource:
     url: jdbc:h2:tcp://localhost/~/test
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: false
   jpa:
+    generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  redis:
+    host: 192.168.0.172
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 2
+        max-idle: 2
+        min-idle: 2
 
 # logging
 logging:
@@ -53,7 +47,3 @@ logging:
     com:
       example: debug
 
-#properties
-drill:
-  test-schedule-period: 0/10 * * * * *
-  bla: 111

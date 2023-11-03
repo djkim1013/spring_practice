@@ -1,4 +1,3 @@
 rootProject.name = 'drill'
 
 include('was')
-include('config-server')
