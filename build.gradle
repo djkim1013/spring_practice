@@ -53,7 +53,10 @@ subprojects {
 
         // lombok
         compileOnly("org.projectlombok:lombok:${lombokVersion}")
+
+        // configuration processor
         annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         //web
         implementation("org.springframework.boot:spring-boot-starter-web")
@@ -64,8 +67,6 @@ project(":was") {
 
     dependencies {
 
-        //h2 db
-        runtimeOnly("com.h2database:h2")
         // Jpa
         api("org.springframework.boot:spring-boot-starter-data-jpa")
 
