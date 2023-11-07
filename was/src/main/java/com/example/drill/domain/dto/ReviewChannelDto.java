@@ -19,9 +19,9 @@ public class ReviewChannelDto implements Serializable {
 
     private String collectStatus;
 
-    private LocalDateTime regDt;
-
-    private LocalDateTime updDt;
+//    private LocalDateTime regDt;
+//
+//    private LocalDateTime updDt;
 
     private String regId;
 

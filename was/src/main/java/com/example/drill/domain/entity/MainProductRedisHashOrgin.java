@@ -16,12 +16,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@RedisHash(value = "mainProductsHash")
-@TypeAlias("MainProductRedisHash")
+@RedisHash(value = "mainProducts")
+@TypeAlias("MainProductRedisHashOrgin")
 @Getter
 @Setter
 @ToString
-public class MainProductRedisHash implements Serializable {
+public class MainProductRedisHashOrgin implements Serializable {
 
     @Id
     private long mainProductId;

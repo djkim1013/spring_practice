@@ -4,21 +4,20 @@ import com.example.drill.domain.dto.CardDto;
 import com.example.drill.domain.dto.HostDto;
 import com.example.drill.domain.dto.ShoppingChannelDto;
 import com.example.drill.domain.dto.SubProductDto;
-import com.redis.om.spring.annotations.Document;
+//import com.redis.om.spring.annotations.Document;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document
-@TypeAlias(value = "MainProductRedisHash")
+//@Document
+@TypeAlias(value = "mainProductJson")
 @Getter
 @Setter
 @ToString

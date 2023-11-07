@@ -37,9 +37,9 @@ public class ShoppingChannelDto implements Serializable {
 
     private String mobileTvURL;
 
-    private LocalDateTime regDt;
-
-    private LocalDateTime updDt;
+//    private LocalDateTime regDt;
+//
+//    private LocalDateTime updDt;
 
     private String regId;
 
