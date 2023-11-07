@@ -1,27 +1,30 @@
 package com.example.drill.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 /**
  * Redis 설정
  */
 @Configuration
-//@EnableCaching
 public class RedisConfig {
 
-//    @Value("${spring.redis.host}")
-//    private String host;
-//
-//    @Value("${spring.redis.port}")
-//    private int port;
-//
-//    @Bean
-//    public RedisConnectionFactory redisConnectionFactory() {
-//        return new LettuceConnectionFactory(host, port);
-//    }
+    @Bean
+    public ObjectMapper objectMapper() {
+        return JsonMapper.builder()
+                .deactivateDefaultTyping()
+                .configure(MapperFeature.USE_ANNOTATIONS, false)
+                .addModules(
+                        new ParameterNamesModule(),
+                        new Jdk8Module(),
+                        new JavaTimeModule())
+                .build();
+    }
 }
 
