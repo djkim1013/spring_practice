@@ -4,8 +4,8 @@ import com.example.drill.domain.entity.MainProductRedisHash;
 import com.example.drill.domain.entity.MainProductRedisHashOrgin;
 import com.example.drill.domain.entity.MainProductRedisJson;
 import com.example.drill.domain.mapper.ProductMapper;
-import com.example.drill.repository.hash.ProductRedisHashRepository;
-import com.example.drill.repository.hash.ProductRedisOriginRepository;
+import com.example.drill.repository.ProductRedisHashRepository;
+import com.example.drill.repository.ProductRedisOriginRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +14,6 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,55 +30,29 @@ public class TestService {
     public void testJsonString() throws JsonProcessingException {
         StopWatch stopWatch = StopWatch.createStarted();
 
-        Set<String> keySet = Objects.requireNonNull(redisTemplate.keys("mainProducts*")).stream().filter(key -> key.matches("mainProducts:\\d{1,5}$")).collect(Collectors.toSet());
-        Set<Long> keySetL = keySet.stream().map(key -> key.replaceAll("[^\\d]", "")).map(Long::valueOf).collect(Collectors.toSet());
+        String originKey = "mainProducts:112660";
+        String key = "mainProductJson:112660";
+        Long keyL = 112660L;
 
-        log.info("got keySet {} :: {}ms", keySetL.size(), stopWatch.getTime());
-        Set<MainProductRedisHashOrgin> originProductList = new HashSet<>();
-        originRepository.findAllById(keySetL).forEach(originProductList::add);
-        log.info("got data {} :: {}ms", originProductList.size(), stopWatch.getTime());
+        MainProductRedisHashOrgin originProduct = originRepository.findById(keyL).get();
+        log.info("origin data {} :: {}ms", originProduct, stopWatch.getTime());
         stopWatch.reset();
 
         for (int i = 0; i < 10; i++) {
             stopWatch.start();
-            for (MainProductRedisHashOrgin value : originProductList) {
-                redisTemplate.opsForValue().set("mainProductJson:" + value.getMainProductId(), objectMapper.writeValueAsString(value));
+            for (int j = 0; j < 7000; j++) {
+                redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(originProduct));
+                MainProductRedisJson result = objectMapper.readValue(redisTemplate.opsForValue().get(key), MainProductRedisJson.class);
             }
-            long time1 = stopWatch.getTime();
-            stopWatch.reset();
-            stopWatch.start();
-            Set<String> keySetJson = Objects.requireNonNull(redisTemplate.keys("mainProductJson*")).stream().filter(key -> key.matches("mainProductJson:\\d{1,5}$")).collect(Collectors.toSet());
-            List<MainProductRedisJson> resultList1 = new ArrayList<>();
-            for (String key : keySetJson) {
-                resultList1.add(objectMapper.readValue(redisTemplate.opsForValue().get(key), MainProductRedisJson.class));
-            }
-            log.info("template write : {}ms | read : {}ms", time1, stopWatch.getTime());
+            log.info("template : {}ms ", stopWatch.getTime());
             stopWatch.reset();
 
             stopWatch.start();
-            for (MainProductRedisHashOrgin value : originProductList) {
-                repository.save(productMapper.convertHash(value));
+            for (int j = 0; j < 7000; j++) {
+                repository.save(productMapper.convertHash(originProduct));
+                MainProductRedisHash result = repository.findById(keyL).get();
             }
-            time1 = stopWatch.getTime();
-            stopWatch.reset();
-            stopWatch.start();
-            List<MainProductRedisHash> resultList2 = new ArrayList<>();
-            repository.findAllById(keySetL).forEach(resultList2::add);
-            log.info("hashRepository write : {}ms | read : {}ms", time1, stopWatch.getTime());
-            stopWatch.reset();
-
-            stopWatch.start();
-            for (MainProductRedisHashOrgin value : originProductList) {
-                repository.save(productMapper.convertHash(value));
-            }
-            time1 = stopWatch.getTime();
-            stopWatch.reset();
-            stopWatch.start();
-            List<MainProductRedisHash> resultList3 = new ArrayList<>();
-            for(Long key: keySetL) {
-                resultList3.add(repository.findById(key).get());
-            }
-            log.info("hashRepository write : {}ms | read : {}ms", time1, stopWatch.getTime());
+            log.info("hashRepository : {}ms", stopWatch.getTime());
             stopWatch.reset();
         }
 
