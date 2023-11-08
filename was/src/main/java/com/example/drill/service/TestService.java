@@ -6,6 +6,7 @@ import com.example.drill.domain.entity.MainProductRedisJson;
 import com.example.drill.domain.mapper.ProductMapper;
 import com.example.drill.repository.ProductRedisHashRepository;
 import com.example.drill.repository.ProductRedisOriginRepository;
+import com.example.drill.repository.ProductRedisStrRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,17 @@ import org.springframework.stereotype.Service;
 public class TestService {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final ProductRedisHashRepository repository;
+    private final ProductRedisHashRepository hashRepository;
     private final ProductRedisOriginRepository originRepository;
+    private final ProductRedisStrRepository jsonRepository;
     private final ProductMapper productMapper;
     private final ObjectMapper objectMapper;
 
-    @Scheduled(fixedRate = 1000 * 30L)
+    public MainProductRedisJson getOne(String id){
+        return jsonRepository.findById(id);
+    }
+
+//    @Scheduled(fixedRate = 1000 * 30L)
     public void testJsonString() throws JsonProcessingException {
         StopWatch stopWatch = StopWatch.createStarted();
 
@@ -49,8 +55,8 @@ public class TestService {
 
             stopWatch.start();
             for (int j = 0; j < 7000; j++) {
-                repository.save(productMapper.convertHash(originProduct));
-                MainProductRedisHash result = repository.findById(keyL).get();
+                hashRepository.save(productMapper.convertHash(originProduct));
+                MainProductRedisHash result = hashRepository.findById(keyL).get();
             }
             log.info("hashRepository : {}ms", stopWatch.getTime());
             stopWatch.reset();
