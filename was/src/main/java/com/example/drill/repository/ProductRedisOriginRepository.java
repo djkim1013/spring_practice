@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRedisOriginRepository extends CrudRepository<MainProductRedisHashOrgin, Long> {
+public interface ProductRedisOriginRepository extends CrudRepository<MainProductRedisHashOrgin, String> {
 }

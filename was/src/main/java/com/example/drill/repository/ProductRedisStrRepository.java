@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductRedisStrRepository implements RedisRepositoryItf<MainProductRedisJson> {
+public class ProductRedisStrRepository implements RedisRepositoryItf<MainProductRedisJson, String> {
 
     private final String ID_PREFIX = "mainProductJson:";
     private final RedisTemplate<String, String> redisTemplate;

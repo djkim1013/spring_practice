@@ -13,7 +13,7 @@ public class TestController {
     private final TestService service;
 
     @GetMapping
-    public MainProductRedisJson getOne(String id){
+    public MainProductRedisJson getOne(Long id){
         return service.getOne(id);
     }
 }

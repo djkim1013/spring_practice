@@ -88,6 +88,9 @@ project(":was") {
         implementation("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
         annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+
+        //websocket
+
     }
 
 }
