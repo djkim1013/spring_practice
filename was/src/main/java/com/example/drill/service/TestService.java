@@ -38,9 +38,11 @@ public class TestService {
         log.info("origin data {} :: {}ms", originProduct, stopWatch.getTime());
         stopWatch.reset();
 
+        int loopCnt = 7000;
+
         for (int i = 0; i < 10; i++) {
             stopWatch.start();
-            for (int j = 0; j < 7000; j++) {
+            for (int j = 0; j < loopCnt; j++) {
                 jsonRepository.save(productMapper.convertJson(originProduct));
                 MainProductRedisJson result = jsonRepository.findById(keyL);
             }
@@ -48,7 +50,7 @@ public class TestService {
             stopWatch.reset();
 
             stopWatch.start();
-            for (int j = 0; j < 7000; j++) {
+            for (int j = 0; j < loopCnt; j++) {
                 hashRepository.save(productMapper.convertHash(originProduct));
                 MainProductRedisHash result = hashRepository.findById(keyL);
             }

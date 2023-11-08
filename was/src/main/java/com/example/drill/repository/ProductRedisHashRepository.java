@@ -13,7 +13,7 @@ import java.util.Map;
 public class ProductRedisHashRepository implements RedisRepositoryItf<MainProductRedisHash, String> {
 
     private final String ID_PREFIX = "mainProductsHash:";
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
 
     @Override

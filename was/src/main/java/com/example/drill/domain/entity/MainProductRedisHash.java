@@ -16,15 +16,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@RedisHash(value = "mainProductsHash")
-@TypeAlias("MainProductRedisHash")
+@RedisHash(value = "mainProducts")
+@TypeAlias(value = "MainProductRedisHash")
 @Getter
 @Setter
 @ToString
 public class MainProductRedisHash implements Serializable {
 
     @Id
-    private String mainProductId;
+    private long mainProductId;
 
     // 아이템 코드
     private String itemCd;
@@ -46,25 +46,25 @@ public class MainProductRedisHash implements Serializable {
     private String endDt;
 
     // 상품평 수
-//    private int reviewCnt;
-//
-//    // 상품 평점
-//    private float reviewScore;
+    private int reviewCnt;
+
+    // 상품 평점
+    private float reviewScore;
 
     // 상품 이름
     private String productName;
 
     // 할인가
-//    private long price;
-//
-//    // 원가
-//    private long orgPrice;
-//
-//    // 무이자 개월수
-//    private int month;
-//
-//    // 할인율
-//    private float discountRate;
+    private long price;
+
+    // 원가
+    private long orgPrice;
+
+    // 무이자 개월수
+    private int month;
+
+    // 할인율
+    private float discountRate;
 
     // ARS 전화번호
     private String ars;
@@ -85,16 +85,16 @@ public class MainProductRedisHash implements Serializable {
     private String programName;
 
     // 카테고리 1
-//    private Long category1;
-//
-//    // 카테고리 2
-//    private Long category2;
-//
-//    // 카테고리 3
-//    private Long category3;
-//
-//    // 카테고리 4
-//    private Long category4;
+    private Long category1;
+
+    // 카테고리 2
+    private Long category2;
+
+    // 카테고리 3
+    private Long category3;
+
+    // 카테고리 4
+    private Long category4;
 
     // 판매중 여부
     private String saleYN;
@@ -112,15 +112,15 @@ public class MainProductRedisHash implements Serializable {
     private String freeSampleYN;
 
     // 쇼핑채널 정보
-//    private ShoppingChannelDto shoppingChannel;
+    private ShoppingChannelDto shoppingChannel;
 
     // 카드 정보
-//    private List<CardDto> cards = new ArrayList<>();
-//
-//    // 쇼호스트 정보
-//    private List<HostDto> showHosts = new ArrayList<>();
-//
-//    // 서브 프로덕트 정보
-//    private List<SubProductDto> subProducts = new ArrayList<>();
+    private List<CardDto> cards = new ArrayList<>();
+
+    // 쇼호스트 정보
+    private List<HostDto> showHosts = new ArrayList<>();
+
+    // 서브 프로덕트 정보
+    private List<SubProductDto> subProducts = new ArrayList<>();
 
 }
