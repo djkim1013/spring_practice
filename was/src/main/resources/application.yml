@@ -16,7 +16,6 @@ spring:
         max-idle: 2
         min-idle: 2
 
-# logging
 logging:
   level:
     root: info

@@ -80,7 +80,6 @@ project(":was") {
 
         // redis
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
-        implementation("com.redis.om:redis-om-spring:${redisOmVersion}")
 
         // mapstruct
         implementation("org.mapstruct:mapstruct:${mapstructVersion}")
