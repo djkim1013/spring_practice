@@ -24,7 +24,7 @@ import java.util.List;
 public class MainProductRedisJson implements Serializable {
 
     @Id
-    private long mainProductId;
+    private String mainProductId;
 
     // 아이템 코드
     private String itemCd;

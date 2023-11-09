@@ -24,7 +24,7 @@ import java.util.List;
 public class MainProductRedisHash implements Serializable {
 
     @Id
-    private long mainProductId;
+    private Long mainProductId;
 
     // 아이템 코드
     private String itemCd;
@@ -46,7 +46,7 @@ public class MainProductRedisHash implements Serializable {
     private String endDt;
 
     // 상품평 수
-    private int reviewCnt;
+    private Integer reviewCnt;
 
     // 상품 평점
     private float reviewScore;
