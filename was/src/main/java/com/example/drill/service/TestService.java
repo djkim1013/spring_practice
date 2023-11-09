@@ -28,7 +28,7 @@ public class TestService {
         return jsonRepository.findById(String.valueOf(id));
     }
 
-    @Scheduled(fixedRate = 1000 * 30L)
+//    @Scheduled(fixedRate = 1000 * 30L)
     public void testJsonString() throws JsonProcessingException {
         StopWatch stopWatch = StopWatch.createStarted();
 
