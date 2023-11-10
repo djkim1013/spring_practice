@@ -7,30 +7,31 @@ import com.example.drill.domain.dto.SubProductDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@RedisHash(value = "mainProducts")
-@TypeAlias("MainProductRedisHashOrgin")
+@Entity
+@Table(name = "tb_mainProducts")
 @Getter
 @Setter
 @ToString
-public class MainProductRedisHashOrgin implements Serializable {
+public class MainProduct implements Serializable {
 
     @Id
-    private long mainProductId;
+    private Long mainProductId;
 
     // 아이템 코드
     private String itemCd;
 
     // 방송 일자(yyyyMMdd)
-    @Indexed
     private String broadcastDt;
 
     // 시작 시간(hhmm)
@@ -46,7 +47,7 @@ public class MainProductRedisHashOrgin implements Serializable {
     private String endDt;
 
     // 상품평 수
-    private int reviewCnt;
+    private Integer reviewCnt;
 
     // 상품 평점
     private float reviewScore;
@@ -115,12 +116,15 @@ public class MainProductRedisHashOrgin implements Serializable {
     private ShoppingChannelDto shoppingChannel;
 
     // 카드 정보
+    @OneToMany
     private List<CardDto> cards = new ArrayList<>();
 
     // 쇼호스트 정보
+    @OneToMany
     private List<HostDto> showHosts = new ArrayList<>();
 
     // 서브 프로덕트 정보
+    @OneToMany
     private List<SubProductDto> subProducts = new ArrayList<>();
 
 }

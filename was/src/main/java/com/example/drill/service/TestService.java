@@ -1,62 +1,70 @@
 package com.example.drill.service;
 
-import com.example.drill.domain.entity.MainProductRedisHash;
-import com.example.drill.domain.entity.MainProductRedisHashOrgin;
 import com.example.drill.domain.entity.MainProductRedisJson;
-import com.example.drill.domain.mapper.ProductMapper;
-import com.example.drill.repository.ProductRedisHashRepository;
-import com.example.drill.repository.ProductRedisOriginRepository;
 import com.example.drill.repository.ProductRedisStrRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.StopWatch;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class TestService {
 
-    private final ProductRedisHashRepository hashRepository;
-    private final ProductRedisOriginRepository originRepository;
     private final ProductRedisStrRepository jsonRepository;
-    private final ProductMapper productMapper;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ObjectMapper objectMapper;
 
     public MainProductRedisJson getOne(Long id) {
         return jsonRepository.findById(String.valueOf(id));
     }
 
-    @Scheduled(fixedRate = 1000 * 30L)
-    public void testJsonString() throws JsonProcessingException {
-        StopWatch stopWatch = StopWatch.createStarted();
+    final String keyL = "112660";
 
-        String keyL = "112660";
+    @Scheduled(fixedRate = 100L)
+    @Async
+    @Transactional(readOnly = true)
+    public void testRead() throws JsonProcessingException {
+        MainProductRedisJson result = jsonRepository.findById(keyL);
+        log.info("read          {}", result.getProductName());
+    }
 
-        MainProductRedisHashOrgin originProduct = originRepository.findById(keyL).get();
-        log.info("origin data {} :: {}ms", originProduct, stopWatch.getTime());
-        stopWatch.reset();
-
-        int loopCnt = 7000;
-
-        for (int i = 0; i < 10; i++) {
-            stopWatch.start();
-            for (int j = 0; j < loopCnt; j++) {
-//                jsonRepository.save(productMapper.convertJson(originProduct));
-                MainProductRedisJson result = jsonRepository.findById(keyL);
+    @Scheduled(fixedRate = 1000L)
+    @Async
+    @Transactional("redisTransactionMng")
+    public void testWrite() throws JsonProcessingException, InterruptedException {
+        MainProductRedisJson result = jsonRepository.findById(keyL);
+        Long randNo = Math.round(Math.random() * 1000);
+        result.setProductName(String.format("product%d", randNo));
+        log.info("write sleep   {}", result.getProductName());
+//        jsonRepository.save(result);
+        redisTemplate.execute(new SessionCallback<List<Object>>() {
+            public List<Object> execute(RedisOperations redisOperations)throws DataAccessException {
+                redisOperations.multi();
+                try {
+                    redisOperations.opsForValue().set("mainProductJson:" + result.getMainProductId(), objectMapper.writeValueAsString(result));
+                    if (randNo > 500L) {
+                        log.info("runtimeException  {}", result.getProductName());
+                        throw new RuntimeException();
+                    }
+                    return redisOperations.exec();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException();
+                }
             }
-            log.info("template : {}ms ", stopWatch.getTime());
-            stopWatch.reset();
-
-            stopWatch.start();
-            for (int j = 0; j < loopCnt; j++) {
-//                hashRepository.save(productMapper.convertHash(originProduct));
-                MainProductRedisHash result = hashRepository.findById(keyL);
-            }
-            log.info("hashRepository : {}ms", stopWatch.getTime());
-            stopWatch.reset();
-        }
-
+        });
+        log.info("write         {}", result.getProductName());
     }
 }

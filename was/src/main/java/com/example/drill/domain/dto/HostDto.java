@@ -2,6 +2,8 @@ package com.example.drill.domain.dto;
 
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,9 +11,11 @@ import java.util.Objects;
 @Setter
 @ToString
 @NoArgsConstructor
+@Entity
 public class HostDto implements Serializable {
     private static final long serialVersionUID = 296225382213238333L;
 
+    @Id
     private Long hostId;
 
     private String hostName;

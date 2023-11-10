@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RedisHash(value = "mainProducts")
-@TypeAlias(value = "MainProductRedisHash")
 @Getter
 @Setter
 @ToString

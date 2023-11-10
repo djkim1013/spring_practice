@@ -74,9 +74,13 @@ subprojects {
 project(":was") {
 
     dependencies {
+        //h2 db
+        runtimeOnly("com.h2database:h2")
 
         // Jpa
         api("org.springframework.boot:spring-boot-starter-data-jpa")
+
+        implementation("org.springframework:spring-tx")
 
         // redis
         implementation("org.springframework.boot:spring-boot-starter-data-redis")

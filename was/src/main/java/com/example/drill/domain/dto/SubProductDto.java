@@ -2,6 +2,8 @@ package com.example.drill.domain.dto;
 
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -11,9 +13,11 @@ import java.util.Set;
 @Builder
 @ToString
 @NoArgsConstructor
+@Entity
 public class SubProductDto implements Serializable {
     private static final long serialVersionUID = -7484355224113278828L;
 
+    @Id
     private Long subProductId;
 
     private String itemCd;

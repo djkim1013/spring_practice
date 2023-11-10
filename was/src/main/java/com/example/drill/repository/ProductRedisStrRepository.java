@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public class ProductRedisStrRepository implements RedisRepositoryItf<MainProduct
     }
 
     @Override
+    @Transactional
     public MainProductRedisJson save(MainProductRedisJson data) {
         try {
             redisTemplate.opsForValue().set(getId(data.getMainProductId()), objectMapper.writeValueAsString(data));
