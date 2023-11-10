@@ -7,13 +7,8 @@ import com.example.drill.domain.dto.SubProductDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,18 +108,19 @@ public class MainProduct implements Serializable {
     private String freeSampleYN;
 
     // 쇼핑채널 정보
+    @OneToOne(cascade = CascadeType.ALL)
     private ShoppingChannelDto shoppingChannel;
 
     // 카드 정보
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CardDto> cards = new ArrayList<>();
 
     // 쇼호스트 정보
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<HostDto> showHosts = new ArrayList<>();
 
     // 서브 프로덕트 정보
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<SubProductDto> subProducts = new ArrayList<>();
 
 }

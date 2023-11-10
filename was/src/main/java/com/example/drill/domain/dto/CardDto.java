@@ -1,21 +1,19 @@
 package com.example.drill.domain.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @Entity
-public class CardDto implements Serializable {
-    private static final long serialVersionUID = -4576060534851240505L;
+@Table(name = "tb_card")
+public class CardDto {
 
     @Id
     private Long cardId;

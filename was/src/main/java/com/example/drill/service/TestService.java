@@ -1,21 +1,20 @@
 package com.example.drill.service;
 
+import com.example.drill.domain.entity.MainProduct;
 import com.example.drill.domain.entity.MainProductRedisJson;
 import com.example.drill.repository.ProductRedisStrRepository;
+import com.example.drill.repository.ProductRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +22,7 @@ import java.util.List;
 public class TestService {
 
     private final ProductRedisStrRepository jsonRepository;
+    private final ProductRepository repository;
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
 
@@ -32,39 +32,34 @@ public class TestService {
 
     final String keyL = "112660";
 
-    @Scheduled(fixedRate = 100L)
+    @Scheduled(fixedRate = 1000L)
     @Async
     @Transactional(readOnly = true)
     public void testRead() throws JsonProcessingException {
-        MainProductRedisJson result = jsonRepository.findById(keyL);
-        log.info("read          {}", result.getProductName());
+        MainProductRedisJson resultRedis = jsonRepository.findById(keyL);
+        Optional<MainProduct> result = repository.findById(Long.valueOf(keyL));
+        if(result.isPresent()) {
+            log.info("read          {} | {}", result.get().getProductName(), resultRedis.getProductName());
+        }else{
+            log.info("not found");
+        }
     }
 
     @Scheduled(fixedRate = 1000L)
     @Async
-    @Transactional("redisTransactionMng")
+    @Transactional
     public void testWrite() throws JsonProcessingException, InterruptedException {
-        MainProductRedisJson result = jsonRepository.findById(keyL);
         Long randNo = Math.round(Math.random() * 1000);
+        log.info("randNp : {}", randNo);
+        MainProductRedisJson resultRedis = jsonRepository.findById(keyL);
+        resultRedis.setProductName(String.format("product%d", randNo));
+        jsonRepository.save(resultRedis);
+        MainProduct result = repository.findById(Long.valueOf(keyL)).orElse(repository.save(objectMapper.readValue(redisTemplate.opsForValue().get("mainProductJson:" + keyL), MainProduct.class)));
         result.setProductName(String.format("product%d", randNo));
-        log.info("write sleep   {}", result.getProductName());
-//        jsonRepository.save(result);
-        redisTemplate.execute(new SessionCallback<List<Object>>() {
-            public List<Object> execute(RedisOperations redisOperations)throws DataAccessException {
-                redisOperations.multi();
-                try {
-                    redisOperations.opsForValue().set("mainProductJson:" + result.getMainProductId(), objectMapper.writeValueAsString(result));
-                    if (randNo > 500L) {
-                        log.info("runtimeException  {}", result.getProductName());
-                        throw new RuntimeException();
-                    }
-                    return redisOperations.exec();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new RuntimeException();
-                }
-            }
-        });
-        log.info("write         {}", result.getProductName());
+        if (randNo > 500L) {
+            log.info("runtimeException  {}", result.getProductName());
+            throw new RuntimeException();
+        }
+        log.info("write         {} | {}", result.getProductName(), resultRedis.getProductName());
     }
 }

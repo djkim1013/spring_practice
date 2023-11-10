@@ -34,7 +34,6 @@ public class ProductRedisStrRepository implements RedisRepositoryItf<MainProduct
     }
 
     @Override
-    @Transactional
     public MainProductRedisJson save(MainProductRedisJson data) {
         try {
             redisTemplate.opsForValue().set(getId(data.getMainProductId()), objectMapper.writeValueAsString(data));
